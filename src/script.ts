@@ -1,33 +1,16 @@
 import fetchData from "./fetchData.js";
-
-type TransacaoFormaPagamento = "Boleto" | "Cartão de Crédito";
-
-type TransacaoStatus =
-  | "Paga"
-  | "Aguardando pagamento"
-  | "Recusada pela operadora de cartão";
-
-interface TransacaoAPI {
-  Status: TransacaoStatus;
-  ID: number;
-  Data: string;
-  ["Forma de Pagamento"]: TransacaoFormaPagamento;
-  Email: string;
-  ["Valor (R$)"]: string;
-  ["Cliente Novo"]: number;
-}
+import normalizarTransacao from "./normalizarTransacao.js";
 
 async function handleData() {
   const data = await fetchData<TransacaoAPI>(
     "https://api.origamid.dev/json/transacoes.json"
   );
 
-  if (data)
-    data.forEach((item) => {
-      console.log(item["Valor (R$)"]);
-    });
+  if (!data) return;
 
-  //console.log("Codigo continua");
+  // const transacoes = data.map(normalizarTransacao);
+  const transacoes = data.map((item) => normalizarTransacao(item));
+  console.log(transacoes);
 }
 
 handleData();
