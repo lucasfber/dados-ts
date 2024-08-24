@@ -54,6 +54,11 @@ function preencherEstatisticas(transacoes: Transacao[]): void {
     });
   }
 
+  const diaElement = document.querySelector<HTMLInputElement>("#dia span");
+  if (diaElement) {
+    diaElement.innerText = estatisticas.melhorDia[0];
+  }
+
   preencherLista(estatisticas.pagamentos, "pagamentos");
   preencherLista(estatisticas.status, "status");
 }
